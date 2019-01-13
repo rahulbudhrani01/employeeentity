@@ -1,12 +1,16 @@
 var fs = require('fs');
+var multer = require('multer');
+var util = require("util");
+var storage = multer.memoryStorage()
 var express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'), //mongo connection
     bodyParser = require('body-parser'), //parses information from POST
     methodOverride = require('method-override'); //used to manipulate POST
 
-
     router.use(bodyParser.urlencoded({ extended: true }))
+    router.use(multer({storage: storage,fileSize: 1024}).single('photo'));
+
     router.use(methodOverride(function(req, res){
           if (req.body && typeof req.body === 'object' && '_method' in req.body) {
             // look in urlencoded POST bodies and delete it
@@ -20,10 +24,18 @@ var express = require('express'),
 
 //this will be accessible from http://127.0.0.1:3000/employees
 router.route('/')
-  
+
     //POST a new employee
     .post(function(req, res) {
         // Get values from POST request. These can be done through forms or REST calls. These rely on the "name" attributes for forms
+        console.log(req.file.buffer)
+        if (req.file) {
+
+            if (req.file.size === 0) {
+		            console.log("File size cannot be emoty?");
+		        }
+
+	        }
         var name = req.body.name;
         var dateOfBirth = req.body.dateOfBirth;
 
@@ -39,18 +51,25 @@ router.route('/')
         var skill10 = req.body.skill10=="on"?1:0;
 
         var salary = req.body.salary;
-        var photo = req.body.photo
-        if(photo == "")
-        {
-          res.status(400);
-          res.send("Path to photo cannot be blank");
-          return;
-        }
+        var photo = req.file.buffer;
         if (!(skill1||skill2||skill3||skill4||skill5||skill6||skill7||skill8||skill9||skill10))
         {
           res.status(400);
           res.send("You need to select at least 1 skill.");
           return;
+        }
+        if(photo == "")
+        {
+          res.status(400);
+          res.send("Photo cannot be blank");
+          return;
+        }
+        if(!((req.file.mimetype == "image/jpeg")|| (req.file.mimetype == "image/jpg") || (req.file.mimetype == "image/png")))
+        {
+          res.status(400);
+          res.send("Unsupported format!");
+          return;
+
         }
         //call the create function for our database
         mongoose.model('employee').create({
@@ -64,7 +83,7 @@ router.route('/')
 
 
 
-          "photo": {'data':fs.readFileSync(photo),'contentType' : 'image/png'}
+          "photo": {'data':req.file.buffer,'contentType' : req.file.mimetype}
 
         }, function (err, employee) {
               if (err) {
@@ -150,8 +169,11 @@ router.route('/:id')
         console.log('GET Retrieving ID: ' + employee._id);
         var employeedob = employee.dateOfBirth.toISOString();
         employeedob = employeedob.substring(0, employeedob.indexOf('T'));
-        photo = new Buffer(employee.photo.data.buffer).toString('base64');
-        console.log(photo)
+        var photo = ""
+        if(employee.photo.data){
+          photo = new Buffer(employee.photo.data.buffer).toString('base64');
+        }
+
         res.format({
           html: function(){
               res.render('employees/show', {
@@ -187,9 +209,9 @@ router.get('/:id/edit', function(req, res) {
             //format the date properly for the value to show correctly in our edit form
 
           var employeedob = employee.dateOfBirth.toISOString();
-          if(employee.photo.data.buffer)
-          {
-            var photo = new Buffer(employee.photo.data.buffer).toString('base64');
+          var photo = ""
+          if(employee.photo.data){
+            photo = new Buffer(employee.photo.data.buffer).toString('base64');
           }
           employeedob = employeedob.substring(0, employeedob.indexOf('T'))
             res.format({

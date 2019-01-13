@@ -3,7 +3,7 @@ extends ../layout
 block content
     h1.
         #{title}
-    form#formAddemployee(name="addemployee",method="post",action="/employees")
+    form#formAddemployee(name="addemployee",method="post",action="/employees",enctype="multipart/form-data")
         p Name:
             input#inputName(type="text", placeholder="ex. John Smith", name="name")
         p Salary:
@@ -42,6 +42,6 @@ block content
               input#inputSkill9(type="checkbox", name="skill10")
 
         p Photo:
-            input#inputPhoto(type="text", name="photo")
+            input#inputPhoto(type="file", name="photo")
         p
             button#btnSubmit(type="submit") submit
