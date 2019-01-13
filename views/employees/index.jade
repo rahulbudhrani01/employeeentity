@@ -6,13 +6,13 @@ block content
     ul
         - each employee, i in employees
             li
-
+                -var photo = new Buffer(employee.photo.data.buffer).toString('base64');
+                img(alt='Image', height = '80' width ='80',src='data:img/png;base64,#{photo}')
 
                 = employee.name
                 = employee.salary
                 = employee.dateOfBirth
                 = employee.skills
-                = employee.photo
                 = employee._id
                 form(action='/employees/#{employee._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
                     input(type='hidden',value='DELETE',name='_method')
