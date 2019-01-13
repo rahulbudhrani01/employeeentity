@@ -1,0 +1,11 @@
+extends ../layout
+
+block content
+    .image-block
+    h1.
+    img(alt='Image', height = '80' width ='80',src='data:img/png;base64,#{photo}')
+    p Employee ID: #{employee._id}
+    p Name: #{employee.name}
+    p Salary: #{employee.salary}
+    p Date of Birth: #{employeedob}
+    p Skills: #{employee.skills}

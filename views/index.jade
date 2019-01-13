@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+    p Employees Page:
+      a(href='/employees/view/1') Employees
+    p Add New Employee Page:
+      a(href='/employees/add/new') Add Employee

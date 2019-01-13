@@ -1,0 +1,35 @@
+extends ../layout
+
+block content
+    h1.
+         #{title}
+    ul
+        - each employee, i in employees
+            li
+
+
+                = employee.name
+                = employee.salary
+                = employee.dateOfBirth
+                = employee.skills
+                = employee.photo
+                = employee._id
+                form(action='/employees/#{employee._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
+                    input(type='hidden',value='DELETE',name='_method')
+                    button(type='submit').
+                        Delete
+                p
+                    a(href='/employees/#{employee._id}/edit') Edit
+
+                p
+                    a(href='/employees/#{employee._id}') Show
+
+      li
+          -var next = parseFloat(current)+1
+          - if (next> parseFloat(pages)) { next = parseFloat(pages) }
+          -var prev = parseFloat(current)-1
+          - if (prev<1) { prev = 1 }
+          a(href='/employees/view/1') First |
+          a(href='/employees/view/#{next}')  Next |
+          a(href='/employees/view/'+ prev)  Previous |
+          a(href='/employees/view/#{pages}')  Last

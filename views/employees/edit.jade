@@ -1,0 +1,90 @@
+extends ../layout
+
+block content
+    h1.
+        Employee ID #{employee._id}
+    form(action='/employees/#{employee._id}/edit',method='post',name='updateemployee',enctype='application/x-www-form-urlencoded')
+        p Name:
+            input#inputName(type='text', value='#{employee.name}', name='name')
+        p Salary:
+            input#inputBadge(type='number', value='#{employee.salary}', name='salary')
+        p Date of Birth:
+            input#inputDob(type='date', value='#{employeedob}', name='dateOfBirth')
+
+        p Skills:
+
+
+            if employee.skills.skill1
+              p skill1:
+                input#inputSkill1(type="checkbox", checked, name="skill1")
+            else
+              p skill1:
+                input#inputSkill1(type="checkbox", name="skill1")
+            if employee.skills.skill2
+              p skill2:
+                input#inputSkill2(type="checkbox", checked, name="skill2")
+            else
+              p skill2:
+                input#inputSkill2(type="checkbox", name="skill2")
+            if employee.skills.skill3
+              p skill3:
+                input#inputSkill3(type="checkbox", checked, name="skill3")
+            else
+              p skill3:
+                input#inputSkill3(type="checkbox", name="skill3")
+            if employee.skills.skill4
+              p skill4:
+                input#inputSkill4(type="checkbox", checked, name="skill4")
+            else
+              p skill4:
+                input#inputSkill4(type="checkbox", name="skill4")
+            if employee.skills.skill5
+              p skill5:
+                input#inputSkill5(type="checkbox", checked, name="skill5")
+            else
+              p skill5:
+                input#inputSkill5(type="checkbox", name="skill5")
+            if employee.skills.skill6
+              p skill6:
+                input#inputSkill6(type="checkbox", checked, name="skill6")
+            else
+              p skill6:
+                input#inputSkill6(type="checkbox", name="skill6")
+            if employee.skills.skill7
+              p skill7:
+                input#inputSkill7(type="checkbox", checked, name="skill7")
+            else
+              p skill7:
+                input#inputSkill7(type="checkbox", name="skill7")
+            if employee.skills.skill8
+              p skill8:
+                input#inputSkill8(type="checkbox", checked, name="skill8")
+            else
+              p skill8:
+                input#inputSkill8(type="checkbox", name="skill8")
+            if employee.skills.skill9
+              p skill9:
+                input#inputSkill9(type="checkbox", checked, name="skill9")
+            else
+              p skill9:
+                input#inputSkill9(type="checkbox", name="skill9")
+            if employee.skills.skill10
+              p skill10:
+                input#inputSkill10(type="checkbox", checked, name="skill10")
+            else
+              p skill10:
+                input#inputSkill10(type="checkbox", name="skill10")
+
+        p Photo:
+            img(alt='Wikipedia', height = '80' width ='80',src='data:img/png;base64,#{photo}')
+
+        p
+            input(type='hidden',value='PUT',name='_method')
+        p
+            button#btnSubmit(type='submit').
+                Update
+
+    form(action='/employees/#{employee._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
+        input(type='hidden',value='DELETE',name='_method')
+        button(type='submit').
+            Delete

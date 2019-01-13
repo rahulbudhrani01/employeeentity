@@ -1,0 +1,47 @@
+extends ../layout
+
+block content
+    h1.
+        #{title}
+    form#formAddemployee(name="addemployee",method="post",action="/employees")
+        p Name:
+            input#inputName(type="text", placeholder="ex. John Smith", name="name")
+        p Salary:
+            input#inputBadge(type="number", placeholder="ex. 100000", name="salary")
+        p Date Of Birth :
+            input#inputDateOfBirth(type="date", name="dateOfBirth")
+        p Skills:
+            p skill1:
+              input#inputSkill1(type="checkbox", name="skill1")
+
+            p skill2:
+              input#inputSkill2(type="checkbox", name="skill2")
+
+            p skill3:
+              input#inputSkill3(type="checkbox", name="skill3")
+
+            p skill4:
+              input#inputSkill4(type="checkbox", name="skill4")
+
+            p skill5:
+              input#inputSkill5(type="checkbox", name="skill5")
+
+            p skill6:
+              input#inputSkill6(type="checkbox", name="skill6")
+
+            p skill7:
+              input#inputSkill7(type="checkbox", name="skill7")
+
+            p skill8:
+              input#inputSkill8(type="checkbox", name="skill8")
+
+            p skill9:
+              input#inputSkill9(type="checkbox", name="skill9")
+
+            p skill10:
+              input#inputSkill9(type="checkbox", name="skill10")
+
+        p Photo:
+            input#inputPhoto(type="text", name="photo")
+        p
+            button#btnSubmit(type="submit") submit
