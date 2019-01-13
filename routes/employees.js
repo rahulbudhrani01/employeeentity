@@ -9,7 +9,7 @@ var express = require('express'),
     methodOverride = require('method-override'); //used to manipulate POST
 
     router.use(bodyParser.urlencoded({ extended: true }))
-    router.use(multer({storage: storage,fileSize: 1024}).single('photo'));
+    router.use(multer({storage: storage}).single('photo'));
 
     router.use(methodOverride(function(req, res){
           if (req.body && typeof req.body === 'object' && '_method' in req.body) {
@@ -28,7 +28,7 @@ router.route('/')
     //POST a new employee
     .post(function(req, res) {
         // Get values from POST request. These can be done through forms or REST calls. These rely on the "name" attributes for forms
-        console.log(req.file.buffer)
+
         if (req.file) {
 
             if (req.file.size === 0) {
@@ -51,14 +51,14 @@ router.route('/')
         var skill10 = req.body.skill10=="on"?1:0;
 
         var salary = req.body.salary;
-        var photo = req.file.buffer;
+
         if (!(skill1||skill2||skill3||skill4||skill5||skill6||skill7||skill8||skill9||skill10))
         {
           res.status(400);
           res.send("You need to select at least 1 skill.");
           return;
         }
-        if(photo == "")
+        if(!(req.file))
         {
           res.status(400);
           res.send("Photo cannot be blank");
