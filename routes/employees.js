@@ -1,6 +1,7 @@
 var fs = require('fs');
 var multer = require('multer');
 var util = require("util");
+var moment = require("moment")
 var storage = multer.memoryStorage()
 var express = require('express'),
     router = express.Router(),
@@ -50,7 +51,15 @@ router.route('/')
         var skill9 = req.body.skill9=="on"?1:0;
         var skill10 = req.body.skill10=="on"?1:0;
 
-        var salary = req.body.salary;
+        if(req.body.salary && req.body.salary < 1000000000001  && req.body.salary > 0){
+          var salary = req.body.salary;
+        }
+        else {
+          res.status(400)
+          res.send("Salary is either invalid or greater than 1000000000000.");
+          return;
+
+        }
 
         if (!(skill1||skill2||skill3||skill4||skill5||skill6||skill7||skill8||skill9||skill10))
         {
@@ -238,9 +247,36 @@ router.get('/:id/edit', function(req, res) {
 //PUT to update a employee by ID
 router.put('/:id/edit', function(req, res) {
     // Get our REST or form values. These rely on the "name" attributes
-    var name = req.body.name;
-    var dateOfBirth = req.body.dateOfBirth;
 
+    if(req.body.name){
+      var name = req.body.name;
+    }
+    else {
+      res.status(400)
+      res.send("Name cannot be null.");
+      return;
+
+    }
+    if(req.body.dateOfBirth){
+      if(moment(req.body.dateOfBirth, "YYYY-MM-DD").isValid() )
+        {
+          console.log(moment(req.body.dateOfBirth, "YYYY-MM-DD").isValid());
+          var dateOfBirth = req.body.dateOfBirth;
+        }
+        else {
+          res.status(400)
+          res.send("Date of Birth is not valid.");
+          return;
+
+        }
+
+    }
+    else {
+      res.status(400)
+      res.send("Date of Birth Cannot be null.");
+      return;
+
+    }
     var skill1 = req.body.skill1=="on"?1:0;
     var skill2 = req.body.skill2=="on"?1:0;
     var skill3 = req.body.skill3=="on"?1:0;
@@ -251,8 +287,17 @@ router.put('/:id/edit', function(req, res) {
     var skill8 = req.body.skill8=="on"?1:0;
     var skill9 = req.body.skill9=="on"?1:0;
     var skill10 = req.body.skill10=="on"?1:0;
-    var salary = req.body.salary;
-    var photo = req.body.photo
+
+    if(req.body.salary && req.body.salary < 1000000000001  && req.body.salary > 0){
+      var salary = req.body.salary;
+    }
+    else {
+      res.status(400)
+      res.send("Salary is either invalid or greater than 1000000000000.");
+      return;
+
+    }
+
 
     if (!(skill1||skill2||skill3||skill4||skill5||skill6||skill7||skill8||skill9||skill10))
     {
@@ -269,7 +314,7 @@ router.put('/:id/edit', function(req, res) {
                 skills : {skill1,skill2,skill3,skill4,skill5,skill6,skill7,skill8,skill9,skill10},
                 dateOfBirth : dateOfBirth,
                 salary : salary,
-                //photo : photo
+
             }, function (err, employeeID) {
               if (err) {
                   res.send("There was a problem updating the information to the database: " + err);
